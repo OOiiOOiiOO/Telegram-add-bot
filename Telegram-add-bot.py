@@ -16,15 +16,16 @@ api_hash = ''        # YOUR API_HASH
 phone = ''        # YOUR PHONE NUMBER, INCLUDING COUNTRY CODE
 client = TelegramClient(phone, api_id, api_hash)
 
+input_csv_file = "members4.csv"
+
 client.connect()
 if not client.is_user_authorized():
     client.send_code_request(phone)
     client.sign_in(phone, input('Enter the code: '))
 
 def add_users_to_group():
-    input_file = "members4.csv"
     users = []
-    with open(input_file, encoding='UTF-8') as f:
+    with open(input_csv_file, encoding='UTF-8') as f:
         rows = csv.reader(f,delimiter=",",lineterminator="\n")
         next(rows, None)
         for row in rows:
@@ -67,7 +68,7 @@ def add_users_to_group():
 
     g_index = input("Enter a Number: ")
     target_group=groups[int(g_index)]
-    print('\n\nGrupo elegido:\t' + groups[int(g_index)].title)
+    print('\n\nSelected group:\t' + groups[int(g_index)].title)
 
     target_group_entity = InputPeerChannel(target_group.id,target_group.access_hash)
 
@@ -133,14 +134,15 @@ def list_users_in_group():
     g_index = input("Enter a Number: ")
     target_group=groups[int(g_index)]
 
-    print('\n\nGrupo elegido:\t' + groups[int(g_index)].title)
+    print('\n\nSelected Group:\t' + groups[int(g_index)].title)
 
     print('Fetching Members...')
     all_participants = []
     all_participants = client.get_participants(target_group, aggressive=True)
 
     print('Saving In file...')
-    with open("members-" + re.sub("-+","-",re.sub("[^a-zA-Z]","-",str.lower(target_group.title))) + ".csv","w",encoding='UTF-8') as f:
+    #with open("members-" + re.sub("-+","-",re.sub("[^a-zA-Z]","-",str.lower(target_group.title))) + ".csv","w",encoding='UTF-8') as f:
+    with open(input_csv_file,"w",encoding='UTF-8') as f:
         writer = csv.writer(f,delimiter=",",lineterminator="\n")
         writer.writerow(['username','user id', 'access hash','name','group', 'group id'])
         for user in all_participants:
@@ -161,9 +163,9 @@ def list_users_in_group():
     print('Members scraped successfully.')
 
 def printCSV():
-    input_file = sys.argv[1]
+    #input_file = sys.argv[1]
     users = []
-    with open(input_file, encoding='UTF-8') as f:
+    with open(input_csv_file, encoding='UTF-8') as f:
         rows = csv.reader(f,delimiter=",",lineterminator="\n")
         next(rows, None)
         for row in rows:
@@ -174,7 +176,7 @@ def printCSV():
             users.append(user)
             print(row)
             print(user)
-    sys.exit('FINITO')
+    sys.exit('Ended!')
 
 # print('Fetching Members...')
 # all_participants = []
