@@ -1,0 +1,9 @@
+TgCrypto
+pyrogram==1.0.1
+sqlalchemy
+psycopg2
+telethon
+
+
+https://github.com/iiooiiooii/
+http://khorsandaalam.ihweb.ir/
